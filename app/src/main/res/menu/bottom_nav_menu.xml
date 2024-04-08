@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/tab_listForms"
+        android:title="@string/list_forms"
+        android:icon="@drawable/ic_list_forms" />
+
+    <item
+        android:id="@+id/tab_uploadJson"
+        android:title="@string/upload_json"
+        android:icon="@drawable/ic_uplod_json" />
+
+</menu>

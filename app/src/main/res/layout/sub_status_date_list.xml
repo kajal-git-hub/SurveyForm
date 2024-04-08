@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp">
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/ivImage"
+                            android:layout_width="@dimen/height_35"
+                            android:layout_height="@dimen/height_35"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:visibility="visible"
+                            app:civ_border_color="#FF000000"
+                            app:civ_border_width="1dp"
+                            android:src="@drawable/account"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+                        <!--<ImageView
+                            android:id="@+id/ivImage"
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:layout_gravity="center_vertical"
+                            android:contentDescription="TODO"
+                            android:visibility="gone" />-->
+
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutPrimaryView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toEndOf="@+id/ivImage"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/llVSS">
+
+                        <TextView
+                            android:id="@+id/textViewPrimary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/robotoregular"
+                            android:textSize="13sp"
+                            android:text=""/>
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_data_changed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/robotoregular"
+                        app:layout_constraintStart_toEndOf="@+id/ivImage"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linearLayoutPrimaryView"
+                        android:textSize="11sp"
+                        android:textColor="@color/dark_gray2"
+                        android:text="Changed 04/04/2024"/>
+
+                    <LinearLayout
+                        android:id="@+id/llVSS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/responseId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="8sp"
+                            android:text="15"
+                            android:gravity="center_horizontal"
+                            android:visibility="gone"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:fontFamily="@font/medium"/>
+
+                        <ImageView
+                            android:id="@+id/imgViewData"
+                            android:layout_width="@dimen/margin_25"
+                            android:layout_height="@dimen/margin_25"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:visibility="gone"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/img_1" />
+
+                        <ImageView
+                            android:id="@+id/imgSync"
+                            android:layout_width="@dimen/margin_25"
+                            android:layout_height="@dimen/margin_25"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:visibility="gone"
+                            android:layout_marginBottom="8dp"
+                            android:src="@drawable/ic_sync" />
+
+                        <ImageView
+                            android:id="@+id/imgEdit"
+                            android:layout_width="@dimen/height_20"
+                            android:layout_height="@dimen/height_20"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="2dp"
+                            android:src="@drawable/ic_pencil" />
+
+                    </LinearLayout>
+
+                    <!--<ImageView
+                        android:id="@+id/imgViewData"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_view"
+                        app:layout_constraintBottom_toTopOf="@id/imgSync"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imgSync"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginVertical="7dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_sync"
+                        app:layout_constraintBottom_toTopOf="@id/imgEdit"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/imgViewData" />
+
+                    <ImageView
+                        android:id="@+id/imgEdit"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_edit"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/imgSync" />-->
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light2_gray"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</LinearLayout>

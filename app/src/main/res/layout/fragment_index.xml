@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_8"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Home.FormData.fragment.IndexFragment">
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+          <LinearLayout
+        android:id="@+id/lldraft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    <LinearLayout
+        android:id="@+id/llFirst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_4"
+        android:background="@android:color/transparent"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:translationZ="4dp">
+
+        <TextView
+            android:id="@+id/tvSaveDraft"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/text_size_16"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/robotomedium"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginBottom="@dimen/margin_4"
+            android:text="Draft" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dark_gray2" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFormDataDraft"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginEnd="@dimen/margin_8"
+        app:layout_constraintTop_toBottomOf="@id/llFirst"/>
+    </LinearLayout>
+
+
+         <LinearLayout
+        android:id="@+id/llready_Readysynced"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/margin_3"
+        app:layout_constraintTop_toBottomOf="@+id/lldraft"
+        app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout
+            android:id="@+id/ll_Readysynced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_2"
+            android:background="@android:color/transparent"
+            android:elevation="4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:translationZ="4dp">
+
+            <TextView
+                android:id="@+id/tv_Readysynced"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/robotomedium"
+                android:layout_marginTop="@dimen/margin_15"
+                android:layout_marginBottom="@dimen/margin_4"
+                android:textSize="@dimen/text_size_16"
+                android:text="Ready to Sync" />
+
+            <View
+                android:id="@+id/view_Readysynced"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dark_gray2" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_Readysynced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8"
+            android:layout_marginEnd="@dimen/margin_8"
+            app:layout_constraintTop_toBottomOf="@id/llready_Readysynced"/>
+    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lltsync"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_3"
+                app:layout_constraintTop_toBottomOf="@id/llready_Readysynced"
+                app:layout_constraintStart_toStartOf="parent">
+                <LinearLayout
+                    android:id="@+id/llsync"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin_4"
+                    android:background="@android:color/transparent"
+                    android:elevation="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/lldraft"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:translationZ="4dp">
+
+                    <TextView
+                        android:id="@+id/tvsync"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_15"
+                        android:layout_marginBottom="@dimen/margin_4"
+                        android:textSize="@dimen/text_size_16"
+                        android:fontFamily="@font/robotomedium"
+                        android:text="Synced" />
+
+                    <View
+                        android:id="@+id/viewsync"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dark_gray2" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvFormDatasync"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:layout_marginEnd="@dimen/margin_8"
+                    app:layout_constraintTop_toBottomOf="@id/llFirst"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDataNotFound"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:fontFamily="@font/robotoregular"
+                android:paddingTop="@dimen/margin_25"
+                android:text="Data Not Found"
+                android:textColor="@color/gray_view"
+                android:textSize="@dimen/text_size_18"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

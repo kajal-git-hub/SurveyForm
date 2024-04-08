@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">UMC-BMS</string>
+    <string name="upload_json">Upload JSON</string>
+    <string name="upload_the_json">Upload The JSON File</string>
+    <string name="list_forms">List Forms</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="forms_not_found">Forms Not Found</string>
+
+    <string name="check_internet">Please check internet connection</string>
+    <string name="connection_error">Connection Error</string>
+    <string name="try_again">Please try again</string>
+
+    <string name="draft">Draft</string>
+    <string name="saved">Saved</string>
+    <string name="synced">Synced</string>
+    <string name="all">All</string>
+
+    <string name="dataNotFound">Data Not Found</string>
+
+    <string name="a">&#xf2b9;</string>
+    <string name="b">&#xf240;</string>
+    <string name="c">&#xf19c;</string>
+    <string name="d">&#xf1fd;</string>
+    <string name="e">&#x21;</string>
+
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+
+</resources>
