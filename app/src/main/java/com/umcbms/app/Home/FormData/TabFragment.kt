@@ -301,7 +301,9 @@ class TabFragment : Fragment(), OnTabChangedListener {
                                 imageMutableArr.forEach {
 
                                     if (it.key == tag) {
-                                        imageMutableArr[tag] = newImageUri?.path!!
+                                        val imageValue = if (base64Encoded == null)  newImageUri?.path!! else base64Encoded
+
+                                        imageMutableArr[tag] = imageValue //newImageUri!!.toString()
                                         Log.e("imageStore", imageMutableArr[tag]!!)
                                         relationImage.setText(tag)
                                     }
@@ -6083,7 +6085,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                 if (childId == columnNm) {
                     childObject.put("value", checkValue)
 
-                    Log.e("imgColumn 4461", "chilldID : $childId and+ ${childrenArray.length()} ")
+                    Log.e("imgColumn 4461", "chilldID : $childId and+ ${checkValue.toString()} ")
 
                 }
 
