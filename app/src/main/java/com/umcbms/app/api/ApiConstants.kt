@@ -15,5 +15,5 @@ object ApiConstants {
     const val schemaIndex = "schema"
     const val surveyDataSubmit = "form/survey/"
 
-    const val BASE_IMAGE_URL = "https://ms2024.citymanagers.in"
+    const val BASE_IMAGE_URL = "https://demo.umcasia.org"
 }
