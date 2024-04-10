@@ -3972,12 +3972,25 @@ class TabFragment : Fragment(), OnTabChangedListener {
     @SuppressLint("SetTextI18n")
     private fun addableRelative(
         childObject: JSONObject,
-        linearLayoutAddable: LinearLayout,
+        linearLayoutAddableMain: LinearLayout,
         relativeOption: Int,
         addableDataArr: MutableMap<Int, MutableMap<Int, Any>>,
         value: JSONObject? = null,
         selectOption: Int,
     ) {
+
+        val linearLayoutAddable = LinearLayout(requireContext())
+        val layoutParamsLl = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        layoutParamsLl.setMargins(0, 0, 0, 30)
+        linearLayoutAddable.layoutParams = layoutParamsLl
+        linearLayoutAddable.orientation = LinearLayout.VERTICAL
+        linearLayoutAddable.setPadding(0, 0, 0, 30)
+        linearLayoutAddable.background =
+            ContextCompat.getDrawable(requireContext(), R.drawable.layout_background)
+        linearLayoutAddableMain.addView(linearLayoutAddable, layoutParamsLl)
 
         val dynamicObject = mutableMapOf<Int, Any>()
         /* addableDataArr[relativeOption] = dynamicObject*/
@@ -3998,7 +4011,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
-        params.setMargins(0, 15, 0, 5)
+        params.setMargins(0, 0, 0, 3)
         tv.setPadding(15, 15, 15, 15)
         tv.background = ContextCompat.getDrawable(requireContext(), R.drawable.title_background)
         tv.layoutParams = params
@@ -4526,7 +4539,6 @@ class TabFragment : Fragment(), OnTabChangedListener {
         qNumber: String
     ) {
         val tvAddableDropDown = TextView(requireContext())
-        Log.d(TAG, "addableDropDown: #$qNumber +  + $addableLabel")
         tvAddableDropDown.text = qNumber + " " + addableLabel
         tvAddableDropDown.textSize = 14f
         if (relativeOption != null) {
