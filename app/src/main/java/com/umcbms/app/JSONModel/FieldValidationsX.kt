@@ -10,6 +10,7 @@ data class FieldValidationsX(
    var maxLimit: Long? = null,
    var minLimit: Long? = null,
    var dbTable: String? = null,
+   var access: String? = null,
    var qcRequired: Boolean? = null,
    var valueRequired: Boolean? = null,
    var multiSelect: Boolean? = null

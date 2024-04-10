@@ -5035,119 +5035,9 @@ class TabFragment : Fragment(), OnTabChangedListener {
                 textSelect.setText(dataValue)
             }
         } else {
-
-            if (fieldValidations.has("dbTable") && fieldValidations.getString("dbTable") != "null") {
-                val dbTable = fieldValidations.getString("dbTable")
-                if (dbTable == "state") {
-                    var dataValue: String? = null
-                    if (!value.isNullOrBlank() && value != "NULL") {
-                        val retrievedList = JSONArray(value)
-
-                        for (i in 0 until retrievedList.length()) {
-                            var cursor = dbHelper.getAllRecordsWithCondition(
-                                MasterDBHelper.STATE_MASTER_TABLE_NAME,
-                                "${MasterDBHelper.ID}=${
-                                    retrievedList.get(i).toString().toInt()
-                                }  ORDER BY ${MasterDBHelper.NAME} ASC"
-                            )
-                            if (cursor.moveToFirst()) {
-                                do {
-                                    if (dataValue == null) {
-                                        dataValue = cursor.getString(
-                                            cursor.getColumnIndex(
-                                                MasterDBHelper.NAME
-                                            )
-                                        )
-                                    } else {
-                                        dataValue = "$dataValue, ${
-                                            cursor.getString(
-                                                cursor.getColumnIndex(
-                                                    MasterDBHelper.NAME
-                                                )
-                                            )
-                                        }"
-                                    }
-
-                                } while (cursor.moveToNext())
-                            }
-                        }
-                        textSelectId.setText(value)
-                        textSelect.setText(dataValue)
-                    }
-
-                } else if (dbTable == "district") {
-                    var dataValue: String? = null
-                    if (!value.isNullOrBlank() && value != "NULL") {
-                        val retrievedList = JSONArray(value)
-
-                        for (i in 0 until retrievedList.length()) {
-                            var cursor = dbHelper.getAllRecordsWithCondition(
-                                MasterDBHelper.DISTRICT_MASTER_TABLE_NAME,
-                                "${MasterDBHelper.ID}=${
-                                    retrievedList.get(i).toString().toInt()
-                                }  ORDER BY ${MasterDBHelper.NAME} ASC"
-                            )
-                            if (cursor.moveToFirst()) {
-                                do {
-                                    if (dataValue == null) {
-                                        dataValue = cursor.getString(
-                                            cursor.getColumnIndex(
-                                                MasterDBHelper.NAME
-                                            )
-                                        )
-                                    } else {
-                                        dataValue = "$dataValue, ${
-                                            cursor.getString(
-                                                cursor.getColumnIndex(
-                                                    MasterDBHelper.NAME
-                                                )
-                                            )
-                                        }"
-                                    }
-
-                                } while (cursor.moveToNext())
-                            }
-                        }
-                        textSelectId.setText(value)
-                        textSelect.setText(dataValue)
-                    }
-                } else if (dbTable == "city") {
-                    var dataValue: String? = null
-                    if (!value.isNullOrBlank() && value != "NULL") {
-                        val retrievedList = JSONArray(value)
-
-                        for (i in 0 until retrievedList.length()) {
-                            var cursor = dbHelper.getAllRecordsWithCondition(
-                                MasterDBHelper.CITY_MASTER_TABLE_NAME,
-                                "${MasterDBHelper.ID}=${
-                                    retrievedList.get(i).toString().toInt()
-                                }  ORDER BY ${MasterDBHelper.NAME} ASC"
-                            )
-                            if (cursor.moveToFirst()) {
-                                do {
-                                    if (dataValue == null) {
-                                        dataValue = cursor.getString(
-                                            cursor.getColumnIndex(
-                                                MasterDBHelper.NAME
-                                            )
-                                        )
-                                    } else {
-                                        dataValue = "$dataValue, ${
-                                            cursor.getString(
-                                                cursor.getColumnIndex(
-                                                    MasterDBHelper.NAME
-                                                )
-                                            )
-                                        }"
-                                    }
-
-                                } while (cursor.moveToNext())
-                            }
-                        }
-                        textSelectId.setText(value)
-                        textSelect.setText(dataValue)
-                    }
-                } else if (dbTable == "user_state") {
+            if (fieldValidations.has("access")){
+                val access = fieldValidations.getString("access")
+                if (access == "state") {
                     var dataValue: String? = null
                     if (!value.isNullOrBlank() && value != "NULL") {
                         val retrievedList = JSONArray(value)
@@ -5184,7 +5074,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         textSelect.setText(dataValue)
                     }
 
-                } else if (dbTable == "user_district") {
+                } else if (access == "district") {
                     var dataValue: String? = null
                     if (!value.isNullOrBlank() && value != "NULL") {
                         val retrievedList = JSONArray(value)
@@ -5220,7 +5110,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         textSelectId.setText(value)
                         textSelect.setText(dataValue)
                     }
-                } else if (dbTable == "user_city") {
+                } else if (access == "city") {
                     var dataValue: String? = null
                     if (!value.isNullOrBlank() && value != "NULL") {
                         val retrievedList = JSONArray(value)
@@ -5255,6 +5145,229 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         }
                         textSelectId.setText(value)
                         textSelect.setText(dataValue)
+                    }
+                }
+            }else {
+                if (fieldValidations.has("dbTable") && fieldValidations.getString("dbTable") != "null") {
+                    val dbTable = fieldValidations.getString("dbTable")
+                    if (dbTable == "state") {
+                        var dataValue: String? = null
+                        if (!value.isNullOrBlank() && value != "NULL") {
+                            val retrievedList = JSONArray(value)
+
+                            for (i in 0 until retrievedList.length()) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.STATE_MASTER_TABLE_NAME,
+                                    "${MasterDBHelper.ID}=${
+                                        retrievedList.get(i).toString().toInt()
+                                    }  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        if (dataValue == null) {
+                                            dataValue = cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                        } else {
+                                            dataValue = "$dataValue, ${
+                                                cursor.getString(
+                                                    cursor.getColumnIndex(
+                                                        MasterDBHelper.NAME
+                                                    )
+                                                )
+                                            }"
+                                        }
+
+                                    } while (cursor.moveToNext())
+                                }
+                            }
+                            textSelectId.setText(value)
+                            textSelect.setText(dataValue)
+                        }
+
+                    } else if (dbTable == "district") {
+                        var dataValue: String? = null
+                        if (!value.isNullOrBlank() && value != "NULL") {
+                            val retrievedList = JSONArray(value)
+
+                        for (i in 0 until retrievedList.length()) {
+                            var cursor = dbHelper.getAllRecordsWithCondition(
+                                MasterDBHelper.DISTRICT_MASTER_TABLE_NAME,
+                                "${MasterDBHelper.ID}=${
+                                    retrievedList.get(i).toString().toInt()
+                                }  ORDER BY ${MasterDBHelper.NAME} ASC"
+                            )
+                            if (cursor.moveToFirst()) {
+                                do {
+                                    if (dataValue == null) {
+                                        dataValue = cursor.getString(
+                                            cursor.getColumnIndex(
+                                                MasterDBHelper.NAME
+                                            )
+                                        )
+                                    } else {
+                                        dataValue = "$dataValue, ${
+                                            cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                        }"
+                                    }
+
+                                    } while (cursor.moveToNext())
+                                }
+                            }
+                            textSelectId.setText(value)
+                            textSelect.setText(dataValue)
+                        }
+                    } else if (dbTable == "city") {
+                        var dataValue: String? = null
+                        if (!value.isNullOrBlank() && value != "NULL") {
+                            val retrievedList = JSONArray(value)
+
+                            for (i in 0 until retrievedList.length()) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.CITY_MASTER_TABLE_NAME,
+                                    "${MasterDBHelper.ID}=${
+                                        retrievedList.get(i).toString().toInt()
+                                    }  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        if (dataValue == null) {
+                                            dataValue = cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                        } else {
+                                            dataValue = "$dataValue, ${
+                                                cursor.getString(
+                                                    cursor.getColumnIndex(
+                                                        MasterDBHelper.NAME
+                                                    )
+                                                )
+                                            }"
+                                        }
+
+                                    } while (cursor.moveToNext())
+                                }
+                            }
+                            textSelectId.setText(value)
+                            textSelect.setText(dataValue)
+                        }
+                    } else if (dbTable == "user_state") {
+                        var dataValue: String? = null
+                        if (!value.isNullOrBlank() && value != "NULL") {
+                            val retrievedList = JSONArray(value)
+
+                            for (i in 0 until retrievedList.length()) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.USER_STATE_TABLE_NAME,
+                                    "${MasterDBHelper.ID}=${
+                                        retrievedList.get(i).toString().toInt()
+                                    }  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        if (dataValue == null) {
+                                            dataValue = cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                        } else {
+                                            dataValue = "$dataValue, ${
+                                                cursor.getString(
+                                                    cursor.getColumnIndex(
+                                                        MasterDBHelper.NAME
+                                                    )
+                                                )
+                                            }"
+                                        }
+
+                                    } while (cursor.moveToNext())
+                                }
+                            }
+                            textSelectId.setText(value)
+                            textSelect.setText(dataValue)
+                        }
+
+                    } else if (dbTable == "user_district") {
+                        var dataValue: String? = null
+                        if (!value.isNullOrBlank() && value != "NULL") {
+                            val retrievedList = JSONArray(value)
+
+                            for (i in 0 until retrievedList.length()) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.USER_DISTRICT_TABLE_NAME,
+                                    "${MasterDBHelper.ID}=${
+                                        retrievedList.get(i).toString().toInt()
+                                    }  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        if (dataValue == null) {
+                                            dataValue = cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                        } else {
+                                            dataValue = "$dataValue, ${
+                                                cursor.getString(
+                                                    cursor.getColumnIndex(
+                                                        MasterDBHelper.NAME
+                                                    )
+                                                )
+                                            }"
+                                        }
+
+                                    } while (cursor.moveToNext())
+                                }
+                            }
+                            textSelectId.setText(value)
+                            textSelect.setText(dataValue)
+                        }
+                    } else if (dbTable == "user_city") {
+                        var dataValue: String? = null
+                        if (!value.isNullOrBlank() && value != "NULL") {
+                            val retrievedList = JSONArray(value)
+
+                            for (i in 0 until retrievedList.length()) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.USER_CITY_TABLE_NAME,
+                                    "${MasterDBHelper.ID}=${
+                                        retrievedList.get(i).toString().toInt()
+                                    }  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        if (dataValue == null) {
+                                            dataValue = cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                        } else {
+                                            dataValue = "$dataValue, ${
+                                                cursor.getString(
+                                                    cursor.getColumnIndex(
+                                                        MasterDBHelper.NAME
+                                                    )
+                                                )
+                                            }"
+                                        }
+
+                                    } while (cursor.moveToNext())
+                                }
+                            }
+                            textSelectId.setText(value)
+                            textSelect.setText(dataValue)
+                        }
                     }
                 }
             }
@@ -5290,141 +5403,9 @@ class TabFragment : Fragment(), OnTabChangedListener {
             }
         }
         textSelect.setOnClickListener {
-            if (fieldValidations.has("dbTable") && fieldValidations.getString("dbTable") != "null") {
-                options.clear()
-                val dbTable = fieldValidations.getString("dbTable")
-                if (dbTable == "state") {
-                    var cursor = dbHelper.getAllRecordsWithCondition(
-                        MasterDBHelper.STATE_MASTER_TABLE_NAME,
-                        "${MasterDBHelper.ID}!=0 ORDER BY ${MasterDBHelper.NAME} ASC"
-                    )
-                    if (cursor.moveToFirst()) {
-                        do {
-                            options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
-                                cursor.getString(
-                                    cursor.getColumnIndex(
-                                        MasterDBHelper.NAME
-                                    )
-                                )
-                        } while (cursor.moveToNext())
-                    }
-                    /*AddFormDataActivity.statesList.forEachIndexed { index, state ->
-                    options[state.id] = state.name
-                }*/
-                    showDropDownDialog(
-                        multiSelect,
-                        options,
-                        tableName,
-                        childId,
-                        textSelect,
-                        placeholder,
-                        textSelectId,
-                        valueRequired,
-                        dropDownError,
-                        textSelectId.text.toString(),
-                        autoPopulateId
-                    )
-                } else if (dbTable == "district") {
-                    var stateSelectedId = 0
-                    if (relativeOptionsLogic != null) {
-                        var stateValue = ""
-                        getValue(relativeOptionsLogic) { it ->
-                            stateValue = it
-                        }
-                        if (stateValue != "" && stateValue != null) {
-                            var jsonArr = JSONArray(stateValue)
-                            stateSelectedId = jsonArr.getInt(jsonArr.length() - 1)
-                        }
-                        if (stateSelectedId != 0) {
-                            var cursor = dbHelper.getAllRecordsWithCondition(
-                                MasterDBHelper.DISTRICT_MASTER_TABLE_NAME,
-                                "${MasterDBHelper.STATE_ID}=$stateSelectedId  ORDER BY ${MasterDBHelper.NAME} ASC"
-                            )
-                            if (cursor.moveToFirst()) {
-                                do {
-                                    options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
-                                        cursor.getString(
-                                            cursor.getColumnIndex(
-                                                MasterDBHelper.NAME
-                                            )
-                                        )
-                                } while (cursor.moveToNext())
-                                showDropDownDialog(
-                                    multiSelect,
-                                    options,
-                                    tableName,
-                                    childId,
-                                    textSelect,
-                                    placeholder,
-                                    textSelectId,
-                                    valueRequired,
-                                    dropDownError,
-                                    textSelectId.text.toString(),
-                                    autoPopulateId
-                                )
-                            }
-
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "First select state",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                    }
-                } else if (dbTable == "city") {
-                    var districtSelectedId = 0
-                    if (relativeOptionsLogic != null) {
-//                        val stateValue = getValue(relativeOptionsLogic)
-                        var stateValue = ""
-                        getValue(relativeOptionsLogic) { it ->
-                            stateValue = it
-                        }
-                        if (stateValue != "" && stateValue != null) {
-                            var jsonArr = JSONArray(stateValue)
-                            districtSelectedId = jsonArr.getInt(jsonArr.length() - 1)
-                        }
-                        if (districtSelectedId != 0) {
-                            var cursor = dbHelper.getAllRecordsWithCondition(
-                                MasterDBHelper.CITY_MASTER_TABLE_NAME,
-                                "${MasterDBHelper.DISTRICT_ID}=$districtSelectedId  ORDER BY ${MasterDBHelper.NAME} ASC"
-                            )
-                            if (cursor.moveToFirst()) {
-                                do {
-                                    options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
-                                        cursor.getString(
-                                            cursor.getColumnIndex(
-                                                MasterDBHelper.NAME
-                                            )
-                                        )
-                                } while (cursor.moveToNext())
-                                showDropDownDialog(
-                                    multiSelect,
-                                    options,
-                                    tableName,
-                                    childId,
-                                    textSelect,
-                                    placeholder,
-                                    textSelectId,
-                                    valueRequired,
-                                    dropDownError,
-                                    textSelectId.text.toString(),
-                                    autoPopulateId
-                                )
-                            }
-
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "First select district",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                    }
-
-                } else if (dbTable == "user_state") {
+            if (fieldValidations.has("access")){
+                val access = fieldValidations.getString("access")
+                if (access == "state") {
                     var cursor = dbHelper.getAllRecordsWithCondition(
                         MasterDBHelper.USER_STATE_TABLE_NAME,
                         "${MasterDBHelper.ID}!=0 ORDER BY ${MasterDBHelper.NAME} ASC"
@@ -5440,8 +5421,8 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         } while (cursor.moveToNext())
                     }
                     /*AddFormDataActivity.statesList.forEachIndexed { index, state ->
-                    options[state.id] = state.name
-                }*/
+                options[state.id] = state.name
+            }*/
                     showDropDownDialog(
                         multiSelect,
                         options,
@@ -5455,7 +5436,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         textSelectId.text.toString(),
                         autoPopulateId
                     )
-                } else if (dbTable == "user_district") {
+                } else if (access == "district") {
                     var stateSelectedId = 0
                     if (relativeOptionsLogic != null) {
                         var stateValue = ""
@@ -5504,7 +5485,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         }
 
                     }
-                } else if (dbTable == "user_city") {
+                } else if (access == "city") {
                     var districtSelectedId = 0
                     if (relativeOptionsLogic != null) {
 //                        val stateValue = getValue(relativeOptionsLogic)
@@ -5552,27 +5533,294 @@ class TabFragment : Fragment(), OnTabChangedListener {
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
+                    }
+                }
+            }else {
+                if (fieldValidations.has("dbTable") && fieldValidations.getString("dbTable") != "null") {
+                    options.clear()
+                    val dbTable = fieldValidations.getString("dbTable")
+                    if (dbTable == "state") {
+                        var cursor = dbHelper.getAllRecordsWithCondition(
+                            MasterDBHelper.STATE_MASTER_TABLE_NAME,
+                            "${MasterDBHelper.ID}!=0 ORDER BY ${MasterDBHelper.NAME} ASC"
+                        )
+                        if (cursor.moveToFirst()) {
+                            do {
+                                options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
+                                    cursor.getString(
+                                        cursor.getColumnIndex(
+                                            MasterDBHelper.NAME
+                                        )
+                                    )
+                            } while (cursor.moveToNext())
+                        }
+                        /*AddFormDataActivity.statesList.forEachIndexed { index, state ->
+                    options[state.id] = state.name
+                }*/
+                        showDropDownDialog(
+                            multiSelect,
+                            options,
+                            tableName,
+                            childId,
+                            textSelect,
+                            placeholder,
+                            textSelectId,
+                            valueRequired,
+                            dropDownError,
+                            textSelectId.text.toString(),
+                            autoPopulateId
+                        )
+                    } else if (dbTable == "district") {
+                        var stateSelectedId = 0
+                        if (relativeOptionsLogic != null) {
+                            var stateValue = ""
+                            getValue(relativeOptionsLogic) { it ->
+                                stateValue = it
+                            }
+                            if (stateValue != "" && stateValue != null) {
+                                var jsonArr = JSONArray(stateValue)
+                                stateSelectedId = jsonArr.getInt(jsonArr.length() - 1)
+                            }
+                            if (stateSelectedId != 0) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.DISTRICT_MASTER_TABLE_NAME,
+                                    "${MasterDBHelper.STATE_ID}=$stateSelectedId  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
+                                            cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                    } while (cursor.moveToNext())
+                                    showDropDownDialog(
+                                        multiSelect,
+                                        options,
+                                        tableName,
+                                        childId,
+                                        textSelect,
+                                        placeholder,
+                                        textSelectId,
+                                        valueRequired,
+                                        dropDownError,
+                                        textSelectId.text.toString(),
+                                        autoPopulateId
+                                    )
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "First select state",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                        }
+                    } else if (dbTable == "city") {
+                        var districtSelectedId = 0
+                        if (relativeOptionsLogic != null) {
+//                        val stateValue = getValue(relativeOptionsLogic)
+                            var stateValue = ""
+                            getValue(relativeOptionsLogic) { it ->
+                                stateValue = it
+                            }
+                            if (stateValue != "" && stateValue != null) {
+                                var jsonArr = JSONArray(stateValue)
+                                districtSelectedId = jsonArr.getInt(jsonArr.length() - 1)
+                            }
+                            if (districtSelectedId != 0) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.CITY_MASTER_TABLE_NAME,
+                                    "${MasterDBHelper.DISTRICT_ID}=$districtSelectedId  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
+                                            cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                    } while (cursor.moveToNext())
+                                    showDropDownDialog(
+                                        multiSelect,
+                                        options,
+                                        tableName,
+                                        childId,
+                                        textSelect,
+                                        placeholder,
+                                        textSelectId,
+                                        valueRequired,
+                                        dropDownError,
+                                        textSelectId.text.toString(),
+                                        autoPopulateId
+                                    )
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "First select district",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                        }
+
+                    } else if (dbTable == "user_state") {
+                        var cursor = dbHelper.getAllRecordsWithCondition(
+                            MasterDBHelper.USER_STATE_TABLE_NAME,
+                            "${MasterDBHelper.ID}!=0 ORDER BY ${MasterDBHelper.NAME} ASC"
+                        )
+                        if (cursor.moveToFirst()) {
+                            do {
+                                options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
+                                    cursor.getString(
+                                        cursor.getColumnIndex(
+                                            MasterDBHelper.NAME
+                                        )
+                                    )
+                            } while (cursor.moveToNext())
+                        }
+                        /*AddFormDataActivity.statesList.forEachIndexed { index, state ->
+                    options[state.id] = state.name
+                }*/
+                        showDropDownDialog(
+                            multiSelect,
+                            options,
+                            tableName,
+                            childId,
+                            textSelect,
+                            placeholder,
+                            textSelectId,
+                            valueRequired,
+                            dropDownError,
+                            textSelectId.text.toString(),
+                            autoPopulateId
+                        )
+                    } else if (dbTable == "user_district") {
+                        var stateSelectedId = 0
+                        if (relativeOptionsLogic != null) {
+                            var stateValue = ""
+                            getValue(relativeOptionsLogic) { it ->
+                                stateValue = it
+                            }
+                            if (stateValue != "" && stateValue != null) {
+                                var jsonArr = JSONArray(stateValue)
+                                stateSelectedId = jsonArr.getInt(jsonArr.length() - 1)
+                            }
+                            if (stateSelectedId != 0) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.USER_DISTRICT_TABLE_NAME,
+                                    "${MasterDBHelper.STATE_ID}=$stateSelectedId  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
+                                            cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                    } while (cursor.moveToNext())
+                                    showDropDownDialog(
+                                        multiSelect,
+                                        options,
+                                        tableName,
+                                        childId,
+                                        textSelect,
+                                        placeholder,
+                                        textSelectId,
+                                        valueRequired,
+                                        dropDownError,
+                                        textSelectId.text.toString(),
+                                        autoPopulateId
+                                    )
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "First select state",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                        }
+                    } else if (dbTable == "user_city") {
+                        var districtSelectedId = 0
+                        if (relativeOptionsLogic != null) {
+//                        val stateValue = getValue(relativeOptionsLogic)
+                            var stateValue = ""
+                            getValue(relativeOptionsLogic) { it ->
+                                stateValue = it
+                            }
+                            if (stateValue != "" && stateValue != null) {
+                                var jsonArr = JSONArray(stateValue)
+                                districtSelectedId = jsonArr.getInt(jsonArr.length() - 1)
+                            }
+                            if (districtSelectedId != 0) {
+                                var cursor = dbHelper.getAllRecordsWithCondition(
+                                    MasterDBHelper.USER_CITY_TABLE_NAME,
+                                    "${MasterDBHelper.DISTRICT_ID}=$districtSelectedId  ORDER BY ${MasterDBHelper.NAME} ASC"
+                                )
+                                if (cursor.moveToFirst()) {
+                                    do {
+                                        options[cursor.getInt(cursor.getColumnIndex(MasterDBHelper.ID))] =
+                                            cursor.getString(
+                                                cursor.getColumnIndex(
+                                                    MasterDBHelper.NAME
+                                                )
+                                            )
+                                    } while (cursor.moveToNext())
+                                    showDropDownDialog(
+                                        multiSelect,
+                                        options,
+                                        tableName,
+                                        childId,
+                                        textSelect,
+                                        placeholder,
+                                        textSelectId,
+                                        valueRequired,
+                                        dropDownError,
+                                        textSelectId.text.toString(),
+                                        autoPopulateId
+                                    )
+                                }
+
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "First select district",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                        }
 
                     }
+                } else {
 
+
+                    showDropDownDialog(
+                        multiSelect,
+                        options,
+                        tableName,
+                        childId,
+                        textSelect,
+                        placeholder,
+                        textSelectId,
+                        valueRequired,
+                        dropDownError,
+                        textSelectId.text.toString(),
+                        autoPopulateId,
+                        customOptionObject = customOptionObject
+                    )
                 }
-            } else {
-                showDropDownDialog(
-                    multiSelect,
-                    options,
-                    tableName,
-                    childId,
-                    textSelect,
-                    placeholder,
-                    textSelectId,
-                    valueRequired,
-                    dropDownError,
-                    textSelectId.text.toString(),
-                    autoPopulateId,
-                    customOptionObject = customOptionObject
-                )
             }
-
         }
     }
 
