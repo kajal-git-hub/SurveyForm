@@ -3,6 +3,7 @@ package com.umcbms.app.Home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -46,12 +47,15 @@ class FormAdapter(
     override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
         val currentForm = formList[position].formName
         holder.formTv.text = currentForm
+        var mLastClickForm: Long = 0L
         val jsonData = Gson().fromJson(formJsonData[position].formSchema, JSONFormDataModel::class.java)
         holder.formAcronymTv.text = jsonData.acronym
 
 
         holder.buttonOpenForm.setOnClickListener {
-            Log.e("getformname",currentForm)
+            if (SystemClock.elapsedRealtime() - mLastClickForm < 1000) return@setOnClickListener
+            mLastClickForm = SystemClock.elapsedRealtime()
+            Log.e("getFormName",currentForm)
 
             try {
                 var permissions=""

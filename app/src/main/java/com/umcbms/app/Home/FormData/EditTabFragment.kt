@@ -14,6 +14,7 @@ import android.graphics.Typeface
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputType
@@ -161,18 +162,28 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
 
         buttonNext = view.findViewById(R.id.buttonNext)
         buttonPrev = view.findViewById(R.id.buttonPrev)
-
+        var isNextButtonEnabled = true
+        var isPrevButtonEnabled = true
+        var mLastClickNext: Long = 0L
+        var mLastClickPrev: Long = 0L
         val validationMutableList = mutableMapOf<String, Boolean>()
 
         buttonNext.setOnClickListener {
             validationMutableList.clear()
-
+            if (SystemClock.elapsedRealtime() - mLastClickNext < 1000 || !isNextButtonEnabled) return@setOnClickListener
+            mLastClickNext = SystemClock.elapsedRealtime()
             validationCheck(validationMutableList)
 
             Log.d(TAG, "onViewCreated: $validationMutableList")
             validationTrueFalse = validationMutableList.all { it.value }
             Log.d(TAG, "onViewCreated2: $validationTrueFalse")
             if (validationTrueFalse) {
+                isPrevButtonEnabled = true
+                buttonPrev.isEnabled = true
+
+                isNextButtonEnabled = false
+                buttonNext.isEnabled = false
+                buttonNext.alpha = 0.5f
                 EditFormDataActivity.viewPager.currentItem =
                     EditFormDataActivity.viewPager.currentItem + 1
 
@@ -180,6 +191,15 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         }
 
         buttonPrev.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickPrev < 1000|| !isPrevButtonEnabled) return@setOnClickListener
+            mLastClickPrev = SystemClock.elapsedRealtime()
+
+            isNextButtonEnabled = true
+            buttonNext.isEnabled = true
+
+            isPrevButtonEnabled = false
+            buttonPrev.isEnabled = false
+            buttonPrev.alpha = 0.5f
             EditFormDataActivity.viewPager.currentItem =
                 EditFormDataActivity.viewPager.currentItem - 1
         }
@@ -6305,6 +6325,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
     private fun buttonViewSubmit(
         bt: Button
     ) {
+        val builder = AlertDialog.Builder(requireContext())
+        var mLastClickSubmit: Long = 0L
         bt.text = "Submit"
         bt.textSize = 16f
         bt.typeface = medium
@@ -6326,6 +6348,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
 
         val validationMutableList = mutableMapOf<String, Boolean>()
         bt.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickSubmit < 1000) return@setOnClickListener
+            mLastClickSubmit = SystemClock.elapsedRealtime()
             validationMutableList.clear()
             validationCheck(validationMutableList)
 

@@ -5,6 +5,8 @@ import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -26,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        var mLastClickLogin: Long = 0L
         dbHelper = MasterDBHelper(this)
         etUserName = findViewById(R.id.etUserName)
         etPassword = findViewById(R.id.etPassword)
@@ -35,6 +38,9 @@ class LoginActivity : AppCompatActivity() {
 
         if (getPrefStringData(this, "token") == null) {
             btnLogin.setOnClickListener {
+                if (SystemClock.elapsedRealtime() - mLastClickLogin < 1000) return@setOnClickListener
+                mLastClickLogin = SystemClock.elapsedRealtime()
+                Log.e("clickTimes",mLastClickLogin.toString())
                 val email = etUserName.text.toString()
                 val pass = etPassword.text.toString()
 

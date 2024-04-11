@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputFilter
@@ -175,10 +176,16 @@ class TabFragment : Fragment(), OnTabChangedListener {
         super.onViewCreated(view, savedInstanceState)
         buttonNext = view.findViewById(R.id.buttonNext)
         buttonPrev = view.findViewById(R.id.buttonPrev)
+        var isNextButtonEnabled = true
+        var isPrevButtonEnabled = true
+        var mLastClickNext: Long = 0L
+        var mLastClickPrev: Long = 0L
 
         val validationMutableList = mutableMapOf<String, Boolean>()
 
         buttonNext.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickNext < 1000 || !isNextButtonEnabled) return@setOnClickListener
+            mLastClickNext = SystemClock.elapsedRealtime()
             validationMutableList.clear()
             val focus = false
 
@@ -209,12 +216,27 @@ class TabFragment : Fragment(), OnTabChangedListener {
             Log.d(TAG, "validationMutableList: $validationMutableList")
             Log.d(TAG, "validationTrueFalse: $validationTrueFalse")
             if (validationTrueFalse) {
+                isPrevButtonEnabled = true
+                buttonPrev.isEnabled = true
+
+                isNextButtonEnabled = false
+                buttonNext.isEnabled = false
+                buttonNext.alpha = 0.5f
                 AddFormDataActivity.viewPager.currentItem =
                     AddFormDataActivity.viewPager.currentItem + 1
             }
         }
 
         buttonPrev.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickPrev < 1000|| !isPrevButtonEnabled) return@setOnClickListener
+            mLastClickPrev = SystemClock.elapsedRealtime()
+
+            isNextButtonEnabled = true
+            buttonNext.isEnabled = true
+
+            isPrevButtonEnabled = false
+            buttonPrev.isEnabled = false
+            buttonPrev.alpha = 0.5f
             AddFormDataActivity.viewPager.currentItem =
                 AddFormDataActivity.viewPager.currentItem - 1
         }
@@ -3210,18 +3232,12 @@ class TabFragment : Fragment(), OnTabChangedListener {
 //            someActivityResultLauncher?.launch(intent)
 //            Log.e("BottomIntent",intent.toString())
 
-            // Create an intent for capturing an image using the device's camera
-
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-            // Create an intent for picking an image from the device's gallery
             val galleryIntent =
                 Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-
-            // Create a chooser dialog to display options for capturing from camera or picking from gallery
             val chooserIntent = Intent.createChooser(galleryIntent, "Select Image")
 
-            // Add the camera intent as an extra to the chooser dialog
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
 
             // Start the activity for result using the chooser dialog
@@ -6724,8 +6740,10 @@ private fun checkSectionSkipLogic(
     private fun buttonViewSubmit(
         bt: Button
     ) {
+        val builder = AlertDialog.Builder(requireContext())
         bt.text = "Submit"
         bt.textSize = 16f
+        var mLastClickSubmit: Long = 0L
         bt.typeface = medium
         bt.gravity = Gravity.CENTER_HORIZONTAL
         bt.textAlignment = Button.TEXT_ALIGNMENT_CENTER
@@ -6743,77 +6761,89 @@ private fun checkSectionSkipLogic(
         }
         linearLayoutSection.addView(bt)
         val validationMutableList = mutableMapOf<String, Boolean>()
+        var dialog:AlertDialog? = null
         bt.setOnClickListener {
-            validationMutableList.clear()
-            val focus = false
-            validationCheck(validationMutableList, focus)
+            if (SystemClock.elapsedRealtime() - mLastClickSubmit < 1000) return@setOnClickListener
+            mLastClickSubmit = SystemClock.elapsedRealtime()
+            builder.setMessage("Are you sure you want to Submit?")
+            builder.setPositiveButton("Yes") { _, _ ->
 
-            validationTrueFalse = validationMutableList.all { it.value }
-            Log.d(TAG, "validationMutableList: $validationMutableList")
-            Log.d(TAG, "validationTrueFalse: $validationTrueFalse")
-            if (validationTrueFalse) {
+                validationMutableList.clear()
+                val focus = false
+                validationCheck(validationMutableList, focus)
+
+                validationTrueFalse = validationMutableList.all { it.value }
+                Log.d(TAG, "validationMutableList: $validationMutableList")
+                Log.d(TAG, "validationTrueFalse: $validationTrueFalse")
+                if (validationTrueFalse) {
 
 
 //            dbHelper.updateSubmissionTable(subId, "Saved", jsonRequestArray.toString())
-                dbHelper.updateSubmissionTable(
-                    subId,
-                    MasterDBHelper.SAVED,
-                    AddFormDataActivity.formJsonData
-                )
-
-                val jsonString = AddFormDataActivity.formJsonData
-                val jsonObject = JSONObject(jsonString)
-                val dataArray = jsonObject.getJSONArray("data")
-
-                val values = ContentValues()
-                values.put(STATUS, SAVED)
-                for (j in 0 until dataArray.length()) {
-                    val sectionObject = dataArray.getJSONObject(j)
-                    sectionFun(sectionObject, values)
-                }
-
-                val tableName = jsonObject.getString("acronym") + SUMMERY
-
-                if (values.size() != 0) {
-                    dbHelper.updateSummeryData(
-                        tableName = tableName,
-                        values,
-                        id = AddFormDataActivity.summeryId
+                    dbHelper.updateSubmissionTable(
+                        subId,
+                        MasterDBHelper.SAVED,
+                        AddFormDataActivity.formJsonData
                     )
-                }
-                Toast.makeText(requireContext(), "Data saved successfully", Toast.LENGTH_LONG)
-                    .show()
-                requireActivity().finish()
-                /*getValueForRequest()
 
-        Log.d(TAG, "getValueForRequest: $jsonRequestArray")
-        val token = getPrefStringData(requireContext(), "token")
-        showLoader(requireContext(),"Survey Syncing...")
-        sectionViewModel.callSurveyDataSubmit(token.toString(),formId,jsonRequestArray).observe(viewLifecycleOwner) { resource ->
-            when (resource.status) {
-                Status.SUCCESS -> {
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
-                    Log.d(TAG, "buttonViewSubmit: "+resource)
+                    val jsonString = AddFormDataActivity.formJsonData
+                    val jsonObject = JSONObject(jsonString)
+                    val dataArray = jsonObject.getJSONArray("data")
+
+                    val values = ContentValues()
+                    values.put(STATUS, SAVED)
+                    for (j in 0 until dataArray.length()) {
+                        val sectionObject = dataArray.getJSONObject(j)
+                        sectionFun(sectionObject, values)
+                    }
+
+                    val tableName = jsonObject.getString("acronym") + SUMMERY
+
+                    if (values.size() != 0) {
+                        dbHelper.updateSummeryData(
+                            tableName = tableName,
+                            values,
+                            id = AddFormDataActivity.summeryId
+                        )
+                    }
+                    Toast.makeText(requireContext(), "Data saved successfully", Toast.LENGTH_LONG)
+                        .show()
                     requireActivity().finish()
-                    val data = resource.data?.body()
-                    Log.d(TAG, "buttonViewSubmit BODY: "+data)
-//                        if (data != null) {
-//
-//                        }
-                }
+                    /*getValueForRequest()
 
-                Status.ERROR -> {
-                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
-                    Log.d("TAG", "Error: ${resource.message}")
-                }
+            Log.d(TAG, "getValueForRequest: $jsonRequestArray")
+            val token = getPrefStringData(requireContext(), "token")
+            showLoader(requireContext(),"Survey Syncing...")
+            sectionViewModel.callSurveyDataSubmit(token.toString(),formId,jsonRequestArray).observe(viewLifecycleOwner) { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                        Log.d(TAG, "buttonViewSubmit: "+resource)
+                        requireActivity().finish()
+                        val data = resource.data?.body()
+                        Log.d(TAG, "buttonViewSubmit BODY: "+data)
+    //                        if (data != null) {
+    //
+    //                        }
+                    }
 
-                Status.LOADING -> {
-                    hideLoader()
+                    Status.ERROR -> {
+                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                        Log.d("TAG", "Error: ${resource.message}")
+                    }
+
+                    Status.LOADING -> {
+                        hideLoader()
+                    }
+                }
+            }*/
+
                 }
             }
-        }*/
-
+            builder.setNegativeButton("No")  { _, _ ->
+                dialog?.dismiss()
             }
+            dialog = builder.create()
+            dialog?.show()
         }
     }
 

@@ -179,7 +179,7 @@ class AddFormDataActivity : AppCompatActivity(){
 
         val userName = getPrefStringData(this, "userName")
         txtTitleUser.text = userName + " ( Ver.$versionName )"
-        Log.e("Getusernamee",userName.toString())
+        Log.e("GetUserName",userName.toString())
         txtTitleName = findViewById(R.id.txtTitleName_Home)
         var currentForm = intent.getStringExtra("currentForm")
        if (currentForm == null)
