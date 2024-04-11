@@ -2014,7 +2014,10 @@ class TabFragment : Fragment(), OnTabChangedListener {
                                                                 false
 //                                                if (!addableFlag) {
                                                             Log.d(TAG, "2: placeholder_$localId-$i")
-                                                            val flag = initialTimeCheckVisibleLogic(
+                                                          /*  val flag = initialTimeCheckVisibleLogic(
+                                                                localId
+                                                            )*/
+                                                            val flag = initialTimeCheckSkipLogic(
                                                                 localId
                                                             )
                                                             val view =
@@ -2169,19 +2172,16 @@ class TabFragment : Fragment(), OnTabChangedListener {
                                     when (addableType) {
                                         "TEXT" -> {
                                             if (!addableFlag) {
-
-                                                val flag = initialTimeCheckVisibleLogic(
+                                                val flag = initialTimeCheckSkipLogic(
                                                     localId
                                                 )
-
-                                                Log.d(TAG, "flag:$localId => $flag")
                                                 /*val flagVisible = initialTimeCheckVisibleLogic(
                                                     localId
                                                 )*/
                                                 val view =
                                                     linearLayoutSection.findViewWithTag<EditText>("placeholder_$localId")
 
-                                                if (!flag) {
+                                                if (flag) {
                                                     validationMutableList[localId] = true
                                                 } else {
                                                     if (valueRequired) {
@@ -2381,7 +2381,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                                                                 false
 //                                                if (!addableFlag) {
                                                             Log.d(TAG, "2: placeholder_$localId-$i")
-                                                            val flag = initialTimeCheckVisibleLogic(
+                                                            val flag = initialTimeCheckSkipLogic(
                                                                 localId
                                                             )
                                                             val view =
@@ -2537,7 +2537,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                                         "TEXT" -> {
                                             if (!addableFlag) {
 
-                                                val flag = initialTimeCheckVisibleLogic(
+                                                val flag = initialTimeCheckSkipLogic(
                                                     localId
                                                 )
 
@@ -2548,7 +2548,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                                                 val view =
                                                     linearLayoutSection.findViewWithTag<EditText>("placeholder_$localId")
 
-                                                if (!flag) {
+                                                if (flag) {
                                                     validationMutableList[localId] = true
                                                 } else {
                                                     if (valueRequired) {
@@ -3828,8 +3828,12 @@ class TabFragment : Fragment(), OnTabChangedListener {
 
         val addableFormat = childObject.getJSONArray("addableFormat")
         var addableFormatlist = Gson().fromJson(childObject.toString(), Children::class.java)
-        addableFormatlist.addableFormat =
+        /*addableFormatlist.addableFormat =
             AddFormDataActivity.visibleLogicManager.setAddableLocalIds(
+                addableFormatlist.addableFormat!!, countAddable
+            )*/
+        addableFormatlist.addableFormat =
+            AddFormDataActivity.skipLogicManager.setAddableSkipLogicLocalIds(
                 addableFormatlist.addableFormat!!, countAddable
             )
         for (k in 0 until addableFormat.length()) {
@@ -3935,11 +3939,17 @@ class TabFragment : Fragment(), OnTabChangedListener {
 
 
         }
-        AddFormDataActivity.visibleLogicManager.recursiveBuildVisibleLogicsForAddable(
+       /* AddFormDataActivity.visibleLogicManager.recursiveBuildVisibleLogicsForAddable(
             addableFormatlist.addableFormat!!
         )
         AddFormDataActivity.visibleLogicAllIds =
-            AddFormDataActivity.visibleLogicManager.getAllIds(AddFormDataActivity.formVisibleLogics)
+            AddFormDataActivity.visibleLogicManager.getAllIds(AddFormDataActivity.formVisibleLogics)*/
+
+        AddFormDataActivity.skipLogicManager.recursiveBuildSkipLogicsForAddable(
+            addableFormatlist.addableFormat!!
+        )
+        AddFormDataActivity.allIds =
+            AddFormDataActivity.skipLogicManager.getAllIds(AddFormDataActivity.formSkipLogics)
 
         val addButtonTitle = childObject.getString("addButtonTitle")
 
@@ -4325,7 +4335,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
             tv.visibility = View.VISIBLE
             etInputTextAddable.visibility = View.VISIBLE
         }
-        val visibleFlag = initialTimeCheckVisibleLogic(localId)
+        /*val visibleFlag = initialTimeCheckVisibleLogic(localId)
         if (visibleFlag) {
             tv.visibility = View.VISIBLE
             etInputTextAddable.visibility = View.VISIBLE
@@ -4334,7 +4344,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                 tv.visibility = View.GONE
                 etInputTextAddable.visibility = View.GONE
             }
-        }
+        }*/
 
         EditTextDebounce(etInputTextAddable)
             .watch {
@@ -6321,7 +6331,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
         for (i in 0 until sectionLength) {
             val sectionObject = dataArray.getJSONObject(i)
             checkSectionForSaveValue(sectionObject, childId, checkValue)
-            Log.e("savevalueimg", sectionObject.toString() + childId + checkValue.toString())
+//            Log.e("savevalueimg", sectionObject.toString() + childId + checkValue.toString())
         }
 
         AddFormDataActivity.formJsonData = jsonObjectOld.toString()

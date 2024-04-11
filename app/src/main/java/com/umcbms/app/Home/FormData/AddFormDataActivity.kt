@@ -61,6 +61,7 @@ class AddFormDataActivity : AppCompatActivity(){
         var allIds: ArrayList<String> = arrayListOf()
 
         val visibleLogicManager = VisibleLogicManager()
+        val skipLogicManager = SkipLogicManager()
 
         var formVisibleLogics: ArrayList<VisibleLogicModel> = arrayListOf()
         var visibleLogicAllIds: ArrayList<String> = arrayListOf()
@@ -334,6 +335,57 @@ class AddFormDataActivity : AppCompatActivity(){
     }
 
     class SkipLogicManager {
+
+        fun setAddableSkipLogicLocalIds(section: List<AddableFormat>,countAddable : Int): List<AddableFormat> {
+            section.forEach { field ->
+                field.localId=field.localId+"_"+countAddable
+                if (!field.skipLogic.isNullOrEmpty()) {
+                    setAddableSkipLogicLocalIds(field.skipLogic!!,countAddable) {
+                        field.skipLogic = it
+                    }
+                }
+            }
+            return section
+        }
+        fun setAddableSkipLogicLocalIds(visibleLogic: List<SkipLogicModel>,countAddable : Int, onClickBack: (List<SkipLogicModel>) -> Unit) {
+            visibleLogic.forEach { field ->
+                if (!field.data.isNullOrEmpty()) {
+                    setAddableSkipLogicDataLocalIds(field.data!!,countAddable) {
+                        onClickBack.invoke(visibleLogic)
+                    }
+                }else{
+
+                }
+            }
+
+        }
+        fun setAddableSkipLogicDataLocalIds(visibleLogicData: List<SkipLogicModel>,countAddable : Int, onClickBack: (List<SkipLogicModel>) -> Unit) {
+            visibleLogicData.forEach { field ->
+                if (!field.data.isNullOrEmpty()) {
+                    setAddableSkipLogicDataLocalIds(field.data!!,countAddable) {
+                        onClickBack.invoke(it)
+                    }
+                }else{
+                    field.skipLogicQ = field.skipLogicQ+"_"+countAddable
+                }
+            }
+        }
+        fun recursiveBuildSkipLogicsForAddable(section: List<AddableFormat>) {
+            section.forEach { field ->
+                if (!field.skipLogic.isNullOrEmpty()) {
+                    val skipLogicElement = SkipLogicModel(
+                        skipLogicQ = field.localId,
+                        relation = "or",
+                        flag = false,
+                        data = arrayListOf()
+                    )
+                    field.skipLogic?.forEach { fieldSl ->
+                        skipLogicElement.data?.add(fieldSl)
+                    }
+                    formSkipLogics.add(skipLogicElement)
+                }
+            }
+        }
         fun recursiveBuildSkipLogics(section: Data) {
             section.children?.forEach { field ->
                 if (field.type != "SECTION") {
