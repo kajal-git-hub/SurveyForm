@@ -1765,7 +1765,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                                                 false
 //                                                if (!addableFlag) {
                                                             Log.d(TAG, "2: placeholder_$localId-$i")
-                                                            val flag = initialTimeCheckVisibleLogic(
+                                                            val flag = initialTimeCheckSkipLogic(
                                                                 localId
                                                             )
                                                             val view =
@@ -1921,7 +1921,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                         "TEXT" -> {
                                             if (!addableFlag) {
 
-                                                val flag = initialTimeCheckVisibleLogic(
+                                                val flag = initialTimeCheckSkipLogic(
                                                     localId
                                                 )
 
@@ -1932,7 +1932,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                                 val view =
                                                     linearLayoutSection.findViewWithTag<EditText>("placeholder_$localId")
 
-                                                if (!flag) {
+                                                if (flag) {
                                                     validationMutableList[localId] = true
                                                 } else {
                                                     if (valueRequired) {
@@ -2288,7 +2288,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                         "TEXT" -> {
                                             if (!addableFlag) {
 
-                                                val flag = initialTimeCheckVisibleLogic(
+                                                val flag = initialTimeCheckSkipLogic(
                                                     localId
                                                 )
 
@@ -2299,7 +2299,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                                 val view =
                                                     linearLayoutSection.findViewWithTag<EditText>("placeholder_$localId")
 
-                                                if (!flag) {
+                                                if (flag) {
                                                     validationMutableList[localId] = true
                                                 } else {
                                                     if (valueRequired) {
@@ -3661,8 +3661,13 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
 
         val addableFormat = childObject.getJSONArray("addableFormat")
         var addableFormatlist= Gson().fromJson(childObject.toString(), Children::class.java)
-        addableFormatlist.addableFormat=EditFormDataActivity.visibleLogicManager.setAddableLocalIds(
-            addableFormatlist.addableFormat!!,countAddable)
+        /*addableFormatlist.addableFormat=EditFormDataActivity.visibleLogicManager.setAddableLocalIds(
+            addableFormatlist.addableFormat!!,countAddable)*/
+        addableFormatlist.addableFormat =
+            EditFormDataActivity.skipLogicManager.setAddableSkipLogicLocalIds(
+                addableFormatlist.addableFormat!!, countAddable
+            )
+
         for (k in 0 until addableFormat.length()) {
 
             val addableItem = addableFormat.getJSONObject(k)
@@ -3758,10 +3763,12 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
 
 
         }
-        EditFormDataActivity.visibleLogicManager.recursiveBuildVisibleLogicsForAddable(
+        EditFormDataActivity.skipLogicManager.recursiveBuildSkipLogicsForAddable(
             addableFormatlist.addableFormat!!
         )
-        EditFormDataActivity.visibleLogicAllIds = EditFormDataActivity.visibleLogicManager.getAllIds(EditFormDataActivity.formVisibleLogics)
+        EditFormDataActivity.allIds =
+            EditFormDataActivity.skipLogicManager.getAllIds(EditFormDataActivity.formSkipLogics)
+
         val addButtonTitle = childObject.getString("addButtonTitle")
 
         setPrefIntData(requireContext(), "count", countAddable)
@@ -3798,6 +3805,19 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         } else {
             linearLayoutAddable.visibility = View.VISIBLE
             btn.visibility = View.VISIBLE
+        }
+
+        for (k in 0 until addableFormat.length()) {
+
+            val addableItem = addableFormat.getJSONObject(k)
+            val addableType = addableItem.getString("type")
+            val localId = addableItem.getString("localId") + "_" + countAddable
+            if (addableType == "DROPDOWN") {
+                var view = linearLayoutSection.findViewWithTag<EditText>("dropDownId_$localId")
+                if (view != null){
+                    checkSkipLogic(localId, view.text.toString())
+                }
+            }
         }
     }
 
@@ -4083,7 +4103,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             }
         }
 
-        Log.d(TAG, "inputTextAddable 1: $addableDataArr")
+//        Log.d(TAG, "inputTextAddable 1$localId: $addableDataArr")
         etInputTextAddable.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
 //                dynamicObject[k] = s.toString()
@@ -4115,6 +4135,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             }
         })
         val flag = initialTimeCheckSkipLogic(localId)
+        Log.d(TAG, "inputTextAddable 23$1$localId: $flag")
         if (flag) {
             tv.visibility = View.GONE
             etInputTextAddable.visibility = View.GONE
@@ -4122,16 +4143,16 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             tv.visibility = View.VISIBLE
             etInputTextAddable.visibility = View.VISIBLE
         }
-        val visibleFlag = initialTimeCheckVisibleLogic(localId)
+       /* val visibleFlag = initialTimeCheckVisibleLogic(localId)
         if (visibleFlag) {
             tv.visibility = View.VISIBLE
             etInputTextAddable.visibility = View.VISIBLE
         }else {
-           /* if (!defaultVisibility){
+           *//* if (!defaultVisibility){
                 tv.visibility = View.GONE
                 etInputTextAddable.visibility = View.GONE
-            }*/
-        }
+            }*//*
+        }*/
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -4364,6 +4385,16 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                 }
             }
         }
+
+        val flag = initialTimeCheckSkipLogic(localId)
+        Log.d(TAG, "inputTextAddable 23$1$localId: $flag")
+        if (flag) {
+            tv.visibility = View.GONE
+            etInputTextAddable.visibility = View.GONE
+        } else {
+            tv.visibility = View.VISIBLE
+            etInputTextAddable.visibility = View.VISIBLE
+        }
     }
 
     private fun addableDropDown(
@@ -4445,7 +4476,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         linearLayoutAddable.addView(dropDownError)
 
         val textSelectId = EditText(requireContext())
-        textSelectId.tag = k.toString() //childId
+        textSelectId.tag = "dropDownId_$localId"//k.toString() //childId
         textSelectId.visibility = View.GONE
         linearLayoutAddable.addView(textSelectId)
 
@@ -4562,6 +4593,16 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                     dropDownError.visibility = View.VISIBLE
                 }
             }
+
+        val flag = initialTimeCheckSkipLogic(id)
+        if (flag) {
+            textSelect.visibility = View.GONE
+            tvAddableDropDown.visibility = View.GONE
+        } else {
+            textSelect.visibility = View.VISIBLE
+            tvAddableDropDown.visibility = View.VISIBLE
+        }
+//        checkSkipLogic(localId, textSelectId.text.toString())
         /*val tvAddableDropDown = TextView(requireContext())
     tvAddableDropDown.text = addableLabel
     tvAddableDropDown.textSize = 20f
@@ -4721,20 +4762,20 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
 
             saveValueAny(id, addableDataArr)
 
-            val flag = initialTimeCheckSkipLogic(id)
+            /*val flag = initialTimeCheckSkipLogic(id)
             if (flag) {
                 textSelect.visibility = View.GONE
                 tvAddableDropDown.visibility = View.GONE
             } else {
                 textSelect.visibility = View.VISIBLE
                 tvAddableDropDown.visibility = View.VISIBLE
-            }
+            }*/
             if (textSelectId.text.toString() == "")
                 dropDownError.visibility = View.VISIBLE
             else
                 dropDownError.visibility = View.GONE
-            dropDownError.visibility =
-                if (textSelectId.text.toString() == "") View.VISIBLE else View.GONE
+            /*dropDownError.visibility =
+                if (textSelectId.text.toString() == "") View.VISIBLE else View.GONE*/
 
             checkSkipLogic(localId, textSelectId.text.toString())
 

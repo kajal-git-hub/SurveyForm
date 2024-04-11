@@ -1927,7 +1927,7 @@ class QCTabFragment : Fragment(), OnTabChangedListener {
                                                                 false
 //                                                if (!addableFlag) {
                                                             Log.d(TAG, "2: placeholder_$localId-$i")
-                                                            val flag = initialTimeCheckVisibleLogic(
+                                                            val flag = initialTimeCheckSkipLogic(
                                                                 localId
                                                             )
                                                             val view =
@@ -2083,7 +2083,7 @@ class QCTabFragment : Fragment(), OnTabChangedListener {
                                         "TEXT" -> {
                                             if (!addableFlag) {
 
-                                                val flag = initialTimeCheckVisibleLogic(
+                                                val flag = initialTimeCheckSkipLogic(
                                                     localId
                                                 )
 

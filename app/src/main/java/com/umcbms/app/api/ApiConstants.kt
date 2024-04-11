@@ -2,9 +2,9 @@ package com.umcbms.app.api
 
 object ApiConstants {
 
-    const val BASE_URL = "https://demo.umcasia.org/api/"
+//    const val BASE_URL = "https://demo.umcasia.org/api/"
 //    const val BASE_URL = "https://ms2024.citymanagers.in/api/"
-//    const val BASE_URL = "https://ufk.citymanagers.in/api/"
+    const val BASE_URL = "https://ufk.citymanagers.in/api/"
 //    const val BASE_URL = "http://192.168.1.120:8000/api/"
 
     const val states = "states/"

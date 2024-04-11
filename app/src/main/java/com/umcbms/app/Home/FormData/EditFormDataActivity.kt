@@ -61,6 +61,7 @@ class EditFormDataActivity : AppCompatActivity() {
         var allIds: ArrayList<String> = arrayListOf()
 
         val visibleLogicManager = VisibleLogicManager()
+        val skipLogicManager = SkipLogicManager()
 
         var formVisibleLogics: ArrayList<VisibleLogicModel> = arrayListOf()
         var visibleLogicAllIds: ArrayList<String> = arrayListOf()
@@ -221,7 +222,7 @@ class EditFormDataActivity : AppCompatActivity() {
                                 if (response.data?.body()?.code == 1) {
                                     jsonData = response.data?.body()?.data?.schema!!
                                     formJsonData = Gson().toJson(jsonData)
-                                    val skipLogicManager = SkipLogicManager()
+//                                    val skipLogicManager = SkipLogicManager()
                                     skipLogicManager.init(jsonData)
                                     visibleLogicManager.init(jsonData)
                                     dynamicContainerLl = findViewById(R.id.dynamicContainerLl)
@@ -310,7 +311,7 @@ class EditFormDataActivity : AppCompatActivity() {
                 if (formSubmissionData!=null){
                     formJsonData=formSubmissionData.responseJson.toString()
                     jsonData = Gson().fromJson(formJsonData, JSONFormDataModel::class.java)
-                    val skipLogicManager = SkipLogicManager()
+//                    val skipLogicManager = SkipLogicManager()
                     skipLogicManager.init(jsonData)
                     visibleLogicManager.init(jsonData)
                     dbHelper = MasterDBHelper(this)
@@ -501,6 +502,56 @@ class EditFormDataActivity : AppCompatActivity() {
     }
 
     class SkipLogicManager {
+        fun setAddableSkipLogicLocalIds(section: List<AddableFormat>,countAddable : Int): List<AddableFormat> {
+            section.forEach { field ->
+                field.localId=field.localId+"_"+countAddable
+                if (!field.skipLogic.isNullOrEmpty()) {
+                    setAddableSkipLogicLocalIds(field.skipLogic!!,countAddable) {
+                        field.skipLogic = it
+                    }
+                }
+            }
+            return section
+        }
+        fun setAddableSkipLogicLocalIds(visibleLogic: List<SkipLogicModel>,countAddable : Int, onClickBack: (List<SkipLogicModel>) -> Unit) {
+            visibleLogic.forEach { field ->
+                if (!field.data.isNullOrEmpty()) {
+                    setAddableSkipLogicDataLocalIds(field.data!!,countAddable) {
+                        onClickBack.invoke(visibleLogic)
+                    }
+                }else{
+
+                }
+            }
+
+        }
+        fun setAddableSkipLogicDataLocalIds(visibleLogicData: List<SkipLogicModel>,countAddable : Int, onClickBack: (List<SkipLogicModel>) -> Unit) {
+            visibleLogicData.forEach { field ->
+                if (!field.data.isNullOrEmpty()) {
+                    setAddableSkipLogicDataLocalIds(field.data!!,countAddable) {
+                        onClickBack.invoke(it)
+                    }
+                }else{
+                    field.skipLogicQ = field.skipLogicQ+"_"+countAddable
+                }
+            }
+        }
+        fun recursiveBuildSkipLogicsForAddable(section: List<AddableFormat>) {
+            section.forEach { field ->
+                if (!field.skipLogic.isNullOrEmpty()) {
+                    val skipLogicElement = SkipLogicModel(
+                        skipLogicQ = field.localId,
+                        relation = "or",
+                        flag = false,
+                        data = arrayListOf()
+                    )
+                    field.skipLogic?.forEach { fieldSl ->
+                        skipLogicElement.data?.add(fieldSl)
+                    }
+                    formSkipLogics.add(skipLogicElement)
+                }
+            }
+        }
         fun recursiveBuildSkipLogics(section: Data) {
             section.children?.forEach { field ->
                 if (field.type != "SECTION") {
@@ -530,7 +581,7 @@ class EditFormDataActivity : AppCompatActivity() {
                             }
                             formSkipLogics.add(skipLogicElement)
                         }
-                        field.addableFormat?.forEach {
+                        /*field.addableFormat?.forEach {
                             if (!it.skipLogic.isNullOrEmpty()) {
                                 val skipLogicElement = SkipLogicModel(
                                     skipLogicQ = it.localId,
@@ -543,7 +594,7 @@ class EditFormDataActivity : AppCompatActivity() {
                                 }
                                 formSkipLogics.add(skipLogicElement)
                             }
-                        }
+                        }*/
                     }
                 } else if (field.type == "SECTION") {
                     Log.d(TAG, field.title.toString())

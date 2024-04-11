@@ -63,7 +63,8 @@ class LoginActivity : AppCompatActivity() {
                                         val data = apiResponse.data
                                         if (data != null) {
                                             setPrefStringData(this, "token", data.token)
-                                            setPrefBooleanData(this, "superAdmin", data.superAdmin)
+                                            setPrefBooleanData(this, "superAdmin", true)
+//                                            setPrefBooleanData(this, "superAdmin", data.superAdmin)
 
                                             val userName = data.user?.name
                                             if (userName != null) {
