@@ -990,7 +990,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     )
-                    layoutParamsLl.setMargins(0, 0, 0, 0)
+                    layoutParamsLl.setMargins(0, 30, 0, 0)
                     linearLayoutAddable.layoutParams = layoutParamsLl
                     // linearLayoutAddable.setPadding(25, 0, 25, 15)
                     linearLayoutAddable.orientation = LinearLayout.VERTICAL
@@ -3853,7 +3853,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                 addableFormatlist.addableFormat!!, countAddable
             )
         for (k in 0 until addableFormat.length()) {
-
+            dynamicObject.put(k,"")
             val addableItem = addableFormat.getJSONObject(k)
             val addableType = addableItem.getString("type")
             val qNumber = addableItem.getString("qNumber")
@@ -5989,10 +5989,10 @@ class TabFragment : Fragment(), OnTabChangedListener {
                 }
             } else {
                 if (selectedIndex != -1) {
-                    //if (selectedItems.isNotEmpty() && selectedItemsId.isNotEmpty()) {
+                    if (selectedItems.isNotEmpty() && selectedItemsId.isNotEmpty()) {
                     selectedItems.add(optionsDropDown.values.elementAt(selectedIndex))
                     selectedItemsId.add(optionsDropDown.keys.elementAt(selectedIndex))
-                    //   }
+                     }
                 }
 
 //                SectionFragment.demoMap.put(childId, selectedItemsId.toString())

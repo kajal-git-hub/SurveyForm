@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.os.SystemClock
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -318,6 +319,8 @@ class FormDataAdapter(
     override fun onBindViewHolder(holder: FormDataViewHolder, position: Int) {
 //        holder.linearLayoutPrimaryView.removeAllViews()
         val item = summeryDataList[position]
+        var mLastClickSync: Long = 0L
+        var mLastClickEdit: Long = 0L
         var jsonString: String? = null
         val value = item[MASTER_FORM_ID]
         val responseId = item[RESPONSE_ID]
@@ -518,6 +521,8 @@ class FormDataAdapter(
         }
 
         holder.imgEdit.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickEdit < 1000) return@setOnClickListener
+            mLastClickEdit = SystemClock.elapsedRealtime()
             val currentTime = getCurrentTime()
             timeMap[position] = currentTime
             notifyItemChanged(position)
@@ -530,6 +535,8 @@ class FormDataAdapter(
             holder.changedTime.text = (" Last Updated On " + currentTimeForItem)
         }else holder.changedTime.text = ""
         holder.imgSync.setOnClickListener {
+            if (SystemClock.elapsedRealtime() - mLastClickSync < 1000) return@setOnClickListener
+            mLastClickSync = SystemClock.elapsedRealtime()
             onSyncClick.invoke(item)
         }
 

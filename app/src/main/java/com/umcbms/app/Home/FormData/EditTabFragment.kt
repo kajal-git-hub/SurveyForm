@@ -3974,7 +3974,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             RelativeLayout.LayoutParams.MATCH_PARENT,
             RelativeLayout.LayoutParams.WRAP_CONTENT
         )
-        layoutParamsLl.setMargins(0, 0, 0, 20)
+        layoutParamsLl.setMargins(0, 30, 0, 20)
         relativeLayout.layoutParams = layoutParamsLl
         relativeLayout.setPadding(15, 15, 15, 15)
         relativeLayout.background = ContextCompat.getDrawable(requireContext(), R.drawable.title_background)

@@ -456,7 +456,9 @@ class QCRaisedFragment : Fragment() {
                 if (value != null) {
                     if (isJsonArray(value.toString())) {
                         var valueArray = JSONArray(value.toString())
-                        checkSkipLogic(id,valueArray.get(valueArray.length()-1).toString())
+                        if (valueArray.length()>0) {
+                            checkSkipLogic(id, valueArray.get(valueArray.length() - 1).toString())
+                        }
                         if (formResponseId != 0 && formResponseId != null) {
                             if (childObject.getString("type") == "UPLOAD_IMAGE" || childObject.getString("type") == "CAPTURE_IMAGE") {
 
