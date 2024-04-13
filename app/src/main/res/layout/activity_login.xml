@@ -107,7 +107,7 @@
                                 android:id="@+id/imageView"
                                 android:layout_width="250dp"
                                 android:layout_height="100dp"
-                                android:src="@drawable/powredby" />
+                                android:src="@drawable/bms_logo" />
 
                         </LinearLayout>
 
@@ -259,9 +259,9 @@
                     android:letterSpacing="0.12"
                     android:maxLines="2"
                     android:paddingBottom="17dp"
-                    android:text="Workers` Survey"
+                    android:text="Beneficiary Management System"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/text_size_16"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -277,7 +277,7 @@
                     android:gravity="center"
                     android:letterSpacing="0.12"
                     android:maxLines="2"
-                    android:text="Bangladesh Sanitation"
+                    android:text="Sanitation Worker's"
                     android:textColor="@color/blue"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -365,13 +365,17 @@
 
         </androidx.cardview.widget.CardView>
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_powerdby"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
             app:layout_constraintEnd_toStartOf="@+id/guidelineEnd_Login"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView2">
+            app:layout_constraintTop_toTopOf="@+id/imageView2"
+            app:layout_constraintVertical_bias="1.0">
 
 
             <com.umcbms.app.utils.TfTextView
@@ -396,7 +400,6 @@
                 app:srcCompat="@drawable/powredby"
                 app:textAllCaps="true" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clHelpNumber"
@@ -436,6 +439,7 @@
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_marginBottom="8dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guidelineStart_Login"

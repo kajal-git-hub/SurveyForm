@@ -27,7 +27,7 @@
                 android:layout_height="@dimen/height_50"
                 android:layout_marginTop="@dimen/margin_4"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_umc_logo"
+                app:srcCompat="@drawable/bms_logo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
