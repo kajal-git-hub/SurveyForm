@@ -50,7 +50,7 @@
                 android:textStyle="bold"
                 android:text="Home"
                 android:foregroundGravity="center_vertical"
-                android:textSize="@dimen/text_size_18"
+                android:textSize="@dimen/text_size_16"
                 android:maxLines="1"
                 android:visibility="visible"
                 android:textColor="@color/white"

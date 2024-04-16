@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UMC-BMS</string>
+    <string name="app_name">BMS-Bangladesh</string>
     <string name="upload_json">Upload JSON</string>
     <string name="upload_the_json">Upload The JSON File</string>
     <string name="list_forms">List Forms</string>

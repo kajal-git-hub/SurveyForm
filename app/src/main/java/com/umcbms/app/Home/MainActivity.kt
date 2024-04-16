@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val userName = getPrefStringData(this, "userName")
-        txtTitleName.text = "Urban Management Center"
+        txtTitleName.text = "People's Republic of Bangladesh"
         txtTittleUser.text = userName + " ( Ver.$versionName )"
                 loginViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
         dbHelper = MasterDBHelper(this)

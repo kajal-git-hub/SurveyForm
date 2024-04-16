@@ -3606,6 +3606,9 @@ class TabFragment : Fragment(), OnTabChangedListener {
         datePickerDialog.setOnCancelListener {
             dateCheckValidation(valueRequired, tableName, childId, textDateEt, dateError)
         }
+        // Set the maximum date to today's date
+        datePickerDialog.datePicker.maxDate = selectedDate.timeInMillis
+
         datePickerDialog.show()
     }
 
@@ -5989,10 +5992,10 @@ class TabFragment : Fragment(), OnTabChangedListener {
                 }
             } else {
                 if (selectedIndex != -1) {
-                    if (selectedItems.isNotEmpty() && selectedItemsId.isNotEmpty()) {
+                    //if (selectedItems.isNotEmpty() && selectedItemsId.isNotEmpty()) {
                     selectedItems.add(optionsDropDown.values.elementAt(selectedIndex))
                     selectedItemsId.add(optionsDropDown.keys.elementAt(selectedIndex))
-                     }
+                   //  }
                 }
 
 //                SectionFragment.demoMap.put(childId, selectedItemsId.toString())

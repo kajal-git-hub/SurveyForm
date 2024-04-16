@@ -4020,7 +4020,7 @@ class QCTabFragment : Fragment(), OnTabChangedListener {
         val addableFormat = childObject.getJSONArray("addableFormat")
 
         for (k in 0 until addableFormat.length()) {
-
+            dynamicObject.put(k,"")
             val addableItem = addableFormat.getJSONObject(k)
             val addableType = addableItem.getString("type")
             val localId = addableItem.getString("localId") + "_" + countAddable

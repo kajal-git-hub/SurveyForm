@@ -26,7 +26,7 @@
                 android:id="@+id/imageViewHome"
                 android:layout_width="@dimen/height_45"
                 android:layout_height="@dimen/height_45"
-                app:srcCompat="@drawable/ic_umc_logo"
+                app:srcCompat="@drawable/bms_logo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
