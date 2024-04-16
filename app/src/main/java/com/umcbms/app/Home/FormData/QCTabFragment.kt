@@ -4020,7 +4020,7 @@ class QCTabFragment : Fragment(), OnTabChangedListener {
         val addableFormat = childObject.getJSONArray("addableFormat")
 
         for (k in 0 until addableFormat.length()) {
-            dynamicObject.put(k,"")
+
             val addableItem = addableFormat.getJSONObject(k)
             val addableType = addableItem.getString("type")
             val localId = addableItem.getString("localId") + "_" + countAddable
@@ -4900,13 +4900,14 @@ class QCTabFragment : Fragment(), OnTabChangedListener {
                 var dataValue: String? = null
                 for (i in 0 until retrievedList.length()) {
                     for ((index, data) in options) {
+                        if (retrievedList.get(i).toString()!="") {
                         if (index == retrievedList.get(i).toString().toInt()) {
                             if (dataValue == null) {
                                 dataValue = data
                             } else {
                                 dataValue = "$dataValue, $data"
                             }
-
+                        }
                         }
                     }
                     if (i == 0) {

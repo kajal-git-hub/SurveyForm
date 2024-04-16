@@ -3452,7 +3452,7 @@ class SectionFragment : Fragment(), OnTabChangedListener {
                             if (isValidNumber(etInputNumber.text.toString(), minLimit, maxLimit)) {
                             } else {
                                 etInputNumber.error =
-                                    "Enter a valid number between $minLimit and $maxLimit"
+                                    "Enter valid Number"
                             }
                         } else {
                             Log.d("TAG", "inputNumber: p")
