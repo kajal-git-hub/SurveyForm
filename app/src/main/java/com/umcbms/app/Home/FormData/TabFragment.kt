@@ -324,7 +324,6 @@ class TabFragment : Fragment(), OnTabChangedListener {
 
                                     if (it.key == tag) {
                                         val imageValue = if (base64Encoded == null)  newImageUri?.path!! else base64Encoded
-
                                         imageMutableArr[tag] = imageValue //newImageUri!!.toString()
                                         Log.e("imageStore", imageMutableArr[tag]!!)
                                         relationImage.setText(tag)
@@ -525,7 +524,6 @@ class TabFragment : Fragment(), OnTabChangedListener {
                     val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     val placeholder =
                         childObject.getJSONObject("properties").getString("placeholder")
-
                     val childId = childObject.getString("id")
                     val fieldValidations = childObject.getJSONObject("fieldValidations")
 
@@ -2361,7 +2359,6 @@ class TabFragment : Fragment(), OnTabChangedListener {
                             for (k in 0 until addableFormat.length()) {
 
                                 val addableItem = addableFormat.getJSONObject(k)
-
                                 val localId = addableItem.getString("localId") + "_" + i
                                 val addableType = addableItem.getString("type")
                                 val valueRequired = addableItem.getBoolean("valueRequired")
@@ -3606,7 +3603,6 @@ class TabFragment : Fragment(), OnTabChangedListener {
         datePickerDialog.setOnCancelListener {
             dateCheckValidation(valueRequired, tableName, childId, textDateEt, dateError)
         }
-        // Set the maximum date to today's date
         datePickerDialog.datePicker.maxDate = selectedDate.timeInMillis
 
         datePickerDialog.show()
@@ -3862,6 +3858,8 @@ class TabFragment : Fragment(), OnTabChangedListener {
             val qNumber = addableItem.getString("qNumber")
             val localId = addableItem.getString("localId") + "_" + countAddable
             val addableLabel = addableItem.getString("label")
+            var maxLimit:Long = 0
+            var minLimit:Long = 0
             val addablePlaceholder = addableItem.getString("placeholder")
             val valueRequired = addableItem.getBoolean("valueRequired")
             var customValidationArr: JSONArray? = null
@@ -3880,6 +3878,10 @@ class TabFragment : Fragment(), OnTabChangedListener {
                 if (value.has(k.toString())) {
                     storeData = value.getString(k.toString())
                 }
+            }
+            if (addableItem.has("maxLimit") && addableItem.has("minLimit")) {
+                maxLimit = addableItem.getLong("maxLimit")
+                minLimit = addableItem.getLong("minLimit")
             }
             when (addableType) {
                 "TEXT" -> {
@@ -3915,7 +3917,9 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         storeData,
                         addableDataArr,
                         localId,
-                        qNumber = qNumber
+                        qNumber = qNumber,
+                        maxLimit = maxLimit,
+                        minLimit = minLimit
                     )
                 }
 
@@ -4061,6 +4065,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
             val addableItem = addableFormat.getJSONObject(k)
             val addableType = addableItem.getString("type")
             val qNumber = addableItem.getString("qNumber")
+            Log.e("Question Number",qNumber)
             val localId = addableItem.getString("localId") //+ "_"+relativeOption
             val addableLabel = addableItem.getString("label")
             val addablePlaceholder = addableItem.getString("placeholder")
@@ -4069,6 +4074,15 @@ class TabFragment : Fragment(), OnTabChangedListener {
             if (addableItem.has("customValidation")) {
                 customValidationArr = addableItem.getJSONArray("customValidation")
             }
+            var maxLimit:Long = 0
+            var minLimit:Long = 0
+
+            if (addableItem.has("maxLimit")&&addableItem.has("minLimit")){
+                maxLimit = addableItem.getLong("maxLimit")
+                minLimit = addableItem.getLong("minLimit")
+
+            }
+            Log.e("Item Images",addableItem.has("maxLimit").toString() + maxLimit + minLimit)
             var defaultVisibility: Boolean = true
             if (addableItem.has("defaultVisibility")) {
                 defaultVisibility = addableItem.getBoolean("defaultVisibility")
@@ -4091,6 +4105,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
             }
 
 
+          Log.e("getMaxL",minLimit.toString() + maxLimit)
             when (addableType) {
                 "TEXT" -> {
                     inputTextAddable(
@@ -4124,7 +4139,9 @@ class TabFragment : Fragment(), OnTabChangedListener {
                         addableDataArr,
                         localId,
                         relativeOption,
-                        qNumber = qNumber
+                        qNumber = qNumber,
+                        maxLimit = maxLimit,
+                        minLimit = minLimit
                     )
                 }
 
@@ -4387,8 +4404,11 @@ class TabFragment : Fragment(), OnTabChangedListener {
         addableDataArr: MutableMap<Int, MutableMap<Int, Any>>,
         localId: String,
         relativeOption: Int? = null,
-        qNumber: String
+        qNumber: String,
+        maxLimit: Long,
+        minLimit:Long
     ) {
+        Log.e("Limit","MAX$maxLimit :MIN $minLimit ")
         val tv = TextView(requireContext())
         tv.text = qNumber + " " + label
         tv.textSize = 14f
@@ -4417,6 +4437,34 @@ class TabFragment : Fragment(), OnTabChangedListener {
         etInputTextAddable.hint = placeholder
         etInputTextAddable.typeface = regular
         etInputTextAddable.textSize = 12f
+        val filterArray = arrayOf<InputFilter>(InputFilter.LengthFilter(12))
+        etInputTextAddable.filters = filterArray
+        try {
+            etInputTextAddable.setOnFocusChangeListener { e, hasFocus ->
+                try {
+                    if (!hasFocus) {
+                        if (isValidNumber(
+                                etInputTextAddable.text.toString(),
+                                minLimit.toLong(),
+                                maxLimit.toLong()
+                            )
+                        ) {
+
+                        } else {
+                            Log.e("Valid Number between","$minLimit to $maxLimit")
+                            etInputTextAddable.error =
+                                "Enter valid number"
+                        }
+                    } else {
+                        Log.d("TAG", "inputNumber: p")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        } catch (_: Exception) {
+            Log.d("TAG", "inputNumber: _")
+        }
         etInputTextAddable.inputType = InputType.TYPE_CLASS_NUMBER
         etInputTextAddable.id = View.generateViewId()
         val layoutParamsView2 = LinearLayout.LayoutParams(
@@ -4483,7 +4531,7 @@ class TabFragment : Fragment(), OnTabChangedListener {
                                 var minActualValue = 0
                                 var maxLimit = dataObject.getString("maxLimit")
                                 var minLimit = dataObject.getString("minLimit")
-
+                                Log.e("asdfas",maxLimit + minLimit)
                                 var maxLimitValue = maxLimit.toIntOrNull()
                                 if (maxLimitValue != null) {
                                     println("It's an Integer")

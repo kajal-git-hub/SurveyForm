@@ -3569,6 +3569,7 @@ class QCTabFragment : Fragment(), OnTabChangedListener {
         datePickerDialog.setOnCancelListener {
             dateCheckValidation(valueRequired, tableName, childId, textDateEt, dateError)
         }
+        datePickerDialog.datePicker.maxDate = selectedDate.timeInMillis
         datePickerDialog.show()
     }
 

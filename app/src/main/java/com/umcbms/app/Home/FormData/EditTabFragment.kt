@@ -17,6 +17,7 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.text.Editable
+import android.text.InputFilter
 import android.text.InputType
 import android.text.Spannable
 import android.text.SpannableString
@@ -363,6 +364,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                     val placeholder =
                         childObject.getJSONObject("properties").getString("placeholder")
                     val childId = childObject.getString("id")
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     val fieldValidations = childObject.getJSONObject("fieldValidations")
                     var skipLogic: JSONArray? = null
                     if (childObject.has("skipLogic")) {
@@ -390,12 +392,14 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                         defaultVisibility,
                         autoPopulateId,
                         value,
-                        linearLayout = linearLayout
+                        linearLayout = linearLayout,
+                        qNumber
                     )
                 }
 
                 "NUMBERS" -> {
                     val label = childObject.getJSONObject("properties").getString("label")
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     val placeholder =
                         childObject.getJSONObject("properties").getString("placeholder")
                     val childId = childObject.getString("id")
@@ -418,12 +422,14 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                         fieldValidations,
                         skipLogic,
                         value,
-                        linearLayout = linearLayout
+                        linearLayout = linearLayout,
+                        qNumber
                     )
                 }
 
                 "TEXT_AREA" -> {
                     val label = childObject.getJSONObject("properties").getString("label")
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     val placeholder =
                         childObject.getJSONObject("properties").getString("placeholder")
                     val childId = childObject.getString("id")
@@ -444,7 +450,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                         fieldValidations,
                         skipLogic,
                         value,
-                        linearLayout = linearLayout
+                        linearLayout = linearLayout,
+                        qNumber
                     )
                 }
 
@@ -455,7 +462,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
 
                     val childId = childObject.getString("id")
                     val fieldValidations = childObject.getJSONObject("fieldValidations")
-
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     var optionsList: JSONArray? = null
                     var skipLogic: JSONArray? = null
 
@@ -498,7 +505,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                             value,
                             autoPopulateId=autoPopulateId,
                             customOptionObject = customOptionObject,
-                            linearLayout = linearLayout
+                            linearLayout = linearLayout,
+                            qNumber = qNumber
                         )
                     } else {
 
@@ -517,7 +525,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                 autoPopulateId=autoPopulateId,
                                 relativeOptionsLogic,
                                 customOptionObject = customOptionObject,
-                                linearLayout = linearLayout
+                                linearLayout = linearLayout,
+                                qNumber
                             )
                         } else {
                             dropDown(
@@ -531,7 +540,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                 value,
                                 autoPopulateId=autoPopulateId,
                                 customOptionObject = customOptionObject,
-                                linearLayout = linearLayout
+                                linearLayout = linearLayout,
+                                qNumber = qNumber
                             )
                         }
                     }
@@ -542,14 +552,14 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                     val childId = childObject.getString("id")
                     val fieldValidations = childObject.getJSONObject("fieldValidations")
                     val valueRequired = fieldValidations.getBoolean("valueRequired")
-
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     val rg = RadioGroup(requireContext())
                     rg.tag = "radio_$childId"
                     val tvRadio = TextView(requireContext())
 //                    var tvId=generateViewId("label_$childId")
                     tvRadio.tag = "label_$childId"
                     tvRadio.typeface = regular
-                    tvRadio.text = label
+                    tvRadio.text = "$qNumber) $label"
                     tvRadio.textSize = 14f
                     val layoutParamsTV = LinearLayoutCompat.LayoutParams(
                         LinearLayoutCompat.LayoutParams.WRAP_CONTENT,
@@ -568,7 +578,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                     R.color.red
                                 )
                             ),
-                            label.length,
+                            spannable.length-1,
                             spannable.length,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
@@ -613,6 +623,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                     if (childObject.has("skipLogic")) {
                         skipLogic = childObject.getJSONArray("skipLogic")
                     }
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     var value: String = ""
                     if (childObject.has("value")) {
                         value = childObject.getString("value")
@@ -647,7 +658,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                     skipLogic,
                                     value,
                                     j,
-                                    linearLayoutRelativeOption
+                                    linearLayoutRelativeOption,
+                                    qNumber
                                 )
                             }
                         }
@@ -698,7 +710,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                                         skipLogic,
                                         value,
                                         i,
-                                        linearLayoutRelativeOption
+                                        linearLayoutRelativeOption,
+                                        qNumber
                                     )
                                 }
 
@@ -728,7 +741,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                             fieldValidations,
                             skipLogic,
                             value,
-                            linearLayoutRelativeOption = linearLayoutRelativeOption
+                            linearLayoutRelativeOption = linearLayoutRelativeOption,
+                            qNumber = qNumber
                         )
                     }
                 }
@@ -756,16 +770,18 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                     if (childObject.has("skipLogic")) {
                         skipLogic = childObject.getJSONArray("skipLogic")
                     }
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     var value: String = ""
                     if (childObject.has("value")) {
                         value = childObject.getString("value")
                     }
-                    dateSelect(label, tableName, childId, fieldValidations, skipLogic, value, linearLayout = linearLayout)
+                    dateSelect(label, tableName, childId, fieldValidations, skipLogic, value, linearLayout = linearLayout,qNumber)
                 }
 
                 "LOCATION" -> {
                     val childId = childObject.getString("id")
                     val label = childObject.getJSONObject("properties").getString("label")
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     val placeholder =
                         childObject.getJSONObject("properties").getString("placeholder")
                     val fieldValidations = childObject.getJSONObject("fieldValidations")
@@ -798,6 +814,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                     if (childObject.has("skipLogic")) {
                         skipLogic = childObject.getJSONArray("skipLogic")
                     }
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     val childId = childObject.getString("id")
                     val linearLayoutAddable = LinearLayout(requireContext())
                     linearLayoutAddable.tag = "linearlayout_addable_$childId"
@@ -1047,6 +1064,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
                     )
+                    val qNumber = childObject.getJSONObject("properties").getString("qNumber")
                     layoutParamsTitle.setMargins(0, 50, 0, 0)
                     linearLayoutTitle.setPadding(0, 0, 0, 20)
                     linearLayoutTitle.background = ContextCompat.getDrawable(requireContext(), R.drawable.layout_background)
@@ -1723,7 +1741,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                             for (k in 0 until addableFormat.length()) {
 
                                 val addableItem = addableFormat.getJSONObject(k)
-
+                                var maxLimit = addableItem.getLong("maxLimit")
+                                var minLimit = addableItem.getLong("minLimit")
                                 val localId = addableItem.getString("localId") + "_" + i
                                 val addableType = addableItem.getString("type")
                                 val valueRequired = addableItem.getBoolean("valueRequired")
@@ -2646,16 +2665,17 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         childId: String,
         fieldValidations: JSONObject,
         skipLogic: JSONArray?,
-        defaultVisibility: Boolean =true,
+        defaultVisibility: Boolean = true,
         autoPopulateId: String = "",
         value: String,
-        linearLayout: LinearLayout
+        linearLayout: LinearLayout,
+        qNumber: String
     ) {
         val tv = TextView(requireContext())
 //        var tvId=generateViewId("label_$childId")
 //        Log.d(TAG, "inputText: ${tvId}")
         tv.tag = "label_$childId"
-        tv.text = label
+        tv.text = "$qNumber) $label"
         tv.typeface = regular
         tv.textSize = 14f
         val layoutParamsTV = LinearLayoutCompat.LayoutParams(
@@ -2694,7 +2714,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             val spannable = SpannableString("$label*")
             spannable.setSpan(
                 ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.red)),
-                label.length,
+                spannable.length-1,
                 spannable.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
@@ -2758,12 +2778,13 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         fieldValidations: JSONObject,
         skipLogic: JSONArray?,
         value: String,
-        linearLayout: LinearLayout
+        linearLayout: LinearLayout,
+        qNumber: String
     ) {
         val tvInputNumber = TextView(requireContext())
 //        var tvId=generateViewId("label_$childId")
         tvInputNumber.tag = "label_$childId"
-        tvInputNumber.text = label
+        tvInputNumber.text = "$qNumber) $label"
         tvInputNumber.typeface = regular
         tvInputNumber.textSize = 14f
         val layoutParamsTV = LinearLayoutCompat.LayoutParams(
@@ -2800,7 +2821,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             val spannable = SpannableString("$label*")
             spannable.setSpan(
                 ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.red)),
-                label.length,
+                spannable.length-1,
                 spannable.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
@@ -2851,12 +2872,13 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         fieldValidations: JSONObject,
         skipLogic: JSONArray?,
         value: String,
-        linearLayout: LinearLayout
+        linearLayout: LinearLayout,
+        qNumber: String
     ) {
         val textAreaTV = TextView(requireContext())
 //        var tvId=generateViewId("label_$childId")
         textAreaTV.tag = "label_$childId"
-        textAreaTV.text = label
+        textAreaTV.text = "$qNumber) $label"
         textAreaTV.typeface = regular
         textAreaTV.textSize = 14f
         val layoutParamsTV = LinearLayoutCompat.LayoutParams(
@@ -2892,7 +2914,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             val spannable = SpannableString("$label*")
             spannable.setSpan(
                 ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.red)),
-                label.length,
+                spannable.length-1,
                 spannable.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
@@ -3022,7 +3044,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         skipLogic: JSONArray?,
         value: String,
         relativeOption: Int? = null,
-        linearLayoutRelativeOption: LinearLayout
+        linearLayoutRelativeOption: LinearLayout,
+        qNumber: String
     ) {
 
         val tv = TextView(requireContext())
@@ -3032,7 +3055,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             tv.tag = "label_$childId"
         }
 
-        tv.text = label
+        tv.text = "$qNumber) $label"
         tv.typeface = regular
         tv.textSize = 14f
         val layoutParamsTV = LinearLayoutCompat.LayoutParams(
@@ -3159,7 +3182,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             val spannable = SpannableString("$label*")
             spannable.setSpan(
                 ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.red)),
-                label.length,
+                spannable.length-1,
                 spannable.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
@@ -3295,11 +3318,12 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         fieldValidations: JSONObject,
         skipLogic: JSONArray?,
         value: String,
-        linearLayout: LinearLayout
+        linearLayout: LinearLayout,
+        qNumber: String
     ) {
         val tv = TextView(requireContext())
         tv.tag = "label_$childId"
-        tv.text = label
+        tv.text = "$qNumber) $label"
         tv.typeface = regular
         tv.textSize = 14f
         val layoutParamsTV = LinearLayoutCompat.LayoutParams(
@@ -3360,7 +3384,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             val spannable = SpannableString("$label*")
             spannable.setSpan(
                 ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.red)),
-                label.length,
+                spannable.length-1,
                 spannable.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
@@ -3426,6 +3450,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         datePickerDialog.setOnCancelListener {
             dateCheckValidation(valueRequired, tableName, childId, textDateEt, dateError)
         }
+        datePickerDialog.datePicker.maxDate = selectedDate.timeInMillis
         datePickerDialog.show()
     }
 
@@ -3672,6 +3697,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
 
             val addableItem = addableFormat.getJSONObject(k)
             val addableType = addableItem.getString("type")
+            var maxLimit = addableItem.getLong("maxLimit")
+            var minLimit = addableItem.getLong("minLimit")
             val localId = addableItem.getString("localId") + "_" + countAddable
             val addableLabel = addableItem.getString("label")
             val addablePlaceholder = addableItem.getString("placeholder")
@@ -3690,6 +3717,10 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                     storeData = value.getString(k.toString())
                 }
             }
+            if (addableItem.has("maxLimit") && addableItem.has("minLimit")) {
+                maxLimit = addableItem.getLong("maxLimit")
+                minLimit = addableItem.getLong("minLimit")
+            }
             when (addableType) {
                 "TEXT" -> {
                     //val fieldValidations = childObject.getJSONObject("fieldValidations")
@@ -3704,7 +3735,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                         storeData,
                         addableDataArr,
                         localId,
-                                defaultVisibility
+                        defaultVisibility
                     )
                 }
 
@@ -3721,7 +3752,10 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                         id,
                         storeData,
                         addableDataArr,
-                        localId
+                        localId,
+                        relativeOption = null,
+                        maxLimit,
+                        minLimit
                     )
                 }
 
@@ -3872,6 +3906,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
 
             val addableItem = addableFormat.getJSONObject(k)
             val addableType = addableItem.getString("type")
+            val qNumber = addableItem.getString("qNumber")
             val localId = addableItem.getString("localId") //+ "_"+relativeOption
             val addableLabel = addableItem.getString("label")
             val addablePlaceholder = addableItem.getString("placeholder")
@@ -3879,6 +3914,13 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
             var customValidationArr: JSONArray? = null
             if (addableItem.has("customValidation")) {
                 customValidationArr = addableItem.getJSONArray("customValidation")
+            }
+            var maxLimit:Long = 0
+            var minLimit:Long = 0
+            if (addableItem.has("maxLimit")&&addableItem.has("minLimit")){
+                maxLimit = addableItem.getLong("maxLimit")
+                minLimit = addableItem.getLong("minLimit")
+
             }
             var defaultVisibility: Boolean = true
             if (addableItem.has("defaultVisibility")) {
@@ -3900,7 +3942,10 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                     }
                 }
             }
-
+            if (addableItem.has("maxLimit") && addableItem.has("minLimit")) {
+                maxLimit = addableItem.getLong("maxLimit")
+                minLimit = addableItem.getLong("minLimit")
+            }
             when (addableType) {
                 "TEXT" -> {
                     inputTextAddable(
@@ -3915,7 +3960,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                         addableDataArr,
                         localId,
                         defaultVisibility,
-                        relativeOption
+                        relativeOption,
                     )
                 }
 
@@ -3932,7 +3977,9 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
                         storeData,
                         addableDataArr,
                         localId,
-                        relativeOption
+                        relativeOption = null,
+                        maxLimit,
+                        minLimit = minLimit
                     )
                 }
 
@@ -4034,7 +4081,7 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         addableDataArr: MutableMap<Int, MutableMap<Int, Any>>,
         localId: String,
         defaultVisibility: Boolean =true,
-        relativeOption: Int? = null
+        relativeOption: Int? = null,
     ) {
         val tv = TextView(requireContext())
         tv.text = label
@@ -4168,8 +4215,11 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         storeData: String? = null,
         addableDataArr: MutableMap<Int, MutableMap<Int, Any>>,
         localId: String,
-        relativeOption: Int? = null
+        relativeOption: Int? = null,
+        maxLimit: Long,
+        minLimit:Long
     ) {
+        Log.e("Limit","MAX$maxLimit :MIN $minLimit ")
         val tv = TextView(requireContext())
         tv.text = label
         tv.textSize = 14f
@@ -4197,6 +4247,34 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         etInputTextAddable.hint = placeholder
         etInputTextAddable.typeface = TabFragment.regular
         etInputTextAddable.textSize = 12f
+        val filterArray = arrayOf<InputFilter>(InputFilter.LengthFilter(12))
+        etInputTextAddable.filters = filterArray
+        try {
+            etInputTextAddable.setOnFocusChangeListener { e, hasFocus ->
+                try {
+                    if (!hasFocus) {
+                        if (isValidNumber(
+                                etInputTextAddable.text.toString(),
+                                minLimit.toLong(),
+                                maxLimit.toLong()
+                            )
+                        ) {
+
+                        } else {
+                            Log.e("Valid Number between","$minLimit to $maxLimit")
+                            etInputTextAddable.error =
+                                "Enter valid number"
+                        }
+                    } else {
+                        Log.d("TAG", "inputNumber: p")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        } catch (_: Exception) {
+            Log.d("TAG", "inputNumber: _")
+        }
         etInputTextAddable.inputType = InputType.TYPE_CLASS_TEXT
         etInputTextAddable.id = View.generateViewId()
         val layoutParamsView2 = LinearLayout.LayoutParams(
@@ -4866,7 +4944,8 @@ class EditTabFragment : Fragment(), OnTabChangedListener {
         autoPopulateId: String="",
         relativeOptionsLogic: String? = null,
         customOptionObject: JSONObject? = null,
-        linearLayout: LinearLayout
+        linearLayout: LinearLayout,
+        qNumber: String
     ) {
         val value = valueMain
         val tvDropDown = TextView(requireContext())
